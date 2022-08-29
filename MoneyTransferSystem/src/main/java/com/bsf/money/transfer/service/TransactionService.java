@@ -1,15 +1,10 @@
 package com.bsf.money.transfer.service;
 
 import com.bsf.money.transfer.dao.TransactionDao;
-import com.bsf.money.transfer.model.Account;
-import com.bsf.money.transfer.repository.AccountRepository;
-import com.bsf.money.transfer.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;

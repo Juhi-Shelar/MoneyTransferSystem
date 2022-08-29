@@ -1,4 +1,4 @@
-package com.bsf;
+package com.bsf.money.transfer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

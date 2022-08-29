@@ -1,7 +1,7 @@
 package com.bsf.money.transfer.model;
 
-import com.bsf.money.transfer.enums.TRANSACTION_METHOD;
 import com.bsf.money.transfer.enums.TRANSACTION_TYPE;
+import com.bsf.money.transfer.enums.TRANSACTION_METHOD;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

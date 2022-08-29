@@ -7,7 +7,6 @@ import com.bsf.money.transfer.model.Transaction;
 import com.bsf.money.transfer.repository.AccountRepository;
 import com.bsf.money.transfer.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +24,7 @@ public class TransactionDao {
     public void debitAmount(String debitAccountNumber, String creditAccountNumber, BigDecimal amount) {
         Account account = accountRepository.getAccountByAccountNumber(debitAccountNumber);
         account.setBalance(account.getBalance().subtract(amount));
+        accountRepository.save(account);
 
         transactionRepository.save(new Transaction(
                 UUID.randomUUID().toString(),
@@ -40,6 +40,7 @@ public class TransactionDao {
     public void creditAmount(String debitAccountNumber, String creditAccountNumber, BigDecimal amount) {
         Account account = accountRepository.getAccountByAccountNumber(creditAccountNumber);
         account.setBalance(account.getBalance().add(amount));
+        accountRepository.save(account);
 
         transactionRepository.save(new Transaction(
                 UUID.randomUUID().toString(),

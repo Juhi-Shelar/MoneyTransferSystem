@@ -21,8 +21,8 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        accountRepository.save(new Account(UUID.randomUUID().toString(), "121", new BigDecimal(1000), 1L));
+        accountRepository.save(new Account(UUID.randomUUID().toString(), "121", new BigDecimal(1000), 0L));
 
-        accountRepository.save(new Account(UUID.randomUUID().toString(), "122", new BigDecimal(1000), 1L));
+        accountRepository.save(new Account(UUID.randomUUID().toString(), "122", new BigDecimal(1000), 0L));
     }
 }

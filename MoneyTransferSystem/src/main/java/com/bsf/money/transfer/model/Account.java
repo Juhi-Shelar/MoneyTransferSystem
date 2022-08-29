@@ -1,6 +1,5 @@
 package com.bsf.money.transfer.model;
 
-import com.bsf.money.transfer.enums.TRANSACTION_TYPE;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
