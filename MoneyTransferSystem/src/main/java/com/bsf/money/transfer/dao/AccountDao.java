@@ -4,7 +4,6 @@ import com.bsf.money.transfer.model.Account;
 import com.bsf.money.transfer.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 @Repository
 public class AccountDao {
     @Autowired
