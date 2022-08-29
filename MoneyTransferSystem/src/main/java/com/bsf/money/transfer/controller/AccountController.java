@@ -24,7 +24,7 @@ public class AccountController {
     @Autowired
     AccountRepository accountRepository;
 
-    @GetMapping
+    @GetMapping("/account")
     ResponseEntity<List<Account>> getAccounts(@PathVariable String accountNumber) {
         Account account = accountService.getAccountByAccountNumber(accountNumber);
         List<Account> accounts = new ArrayList<>();

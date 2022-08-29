@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Component
@@ -20,6 +21,6 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        accountRepository.save(new Account(UUID.randomUUID().toString(), "123457848"));
+        accountRepository.save(new Account(UUID.randomUUID().toString(), "123457848", new BigDecimal(1000)));
     }
 }
