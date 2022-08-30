@@ -25,12 +25,16 @@ import java.util.UUID;
 public class AccountDao {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
-    AccountMapper accountMapper; // = new AccountMapperImpl();
+    private final AccountMapper accountMapper;
     private final Logger logger = LoggerFactory.getLogger(AccountDao.class);
 
     public com.bsf.money.transfer.model.Account getAccountByAccountNumber(String accountNumber) {
         com.bsf.money.transfer.model.Account account =
                 accountMapper.toModel(accountRepository.getAccountByAccountNumber(accountNumber));
+
+        if(account == null)
+            throw new IllegalArgumentException("Account does not exist.");
+
         logger.info("Successfully retrieved account details for accountNumber = {}", accountNumber);
         return account;
     }
@@ -44,24 +48,12 @@ public class AccountDao {
         Account account = accountRepository.getAccountByAccountNumber(debitAccountNumber);
 
         // validation check on account
-        if(account == null)
-            throw new IllegalArgumentException("Account does not exist");
         Validator.validateBalanceIsSufficient(account, amount);
 
         account.setBalance(account.getBalance().subtract(amount));
         account.setModified(new Timestamp(System.currentTimeMillis()).toString());
         accountRepository.save(account);
         logger.info("Successfully debited {} amount from account = {}", amount, debitAccountNumber);
-
-        Transaction transaction = Transaction.builder()
-                .transactionId(UUID.randomUUID().toString())
-                .debitAccountNumber(debitAccountNumber)
-                .creditAccountNumber(creditAccountNumber)
-                .amount(amount)
-                .transactionType(TRANSACTION_TYPE.AMOUNT_TRANSFER)
-                .transactionMethod(TRANSACTION_METHOD.DEBIT)
-                .transactionTimeStamp(new Timestamp(System.currentTimeMillis()).toString())
-                .build();
 
         transactionRepository.save(buildTransaction(debitAccountNumber, creditAccountNumber,
                 amount, TRANSACTION_TYPE.AMOUNT_TRANSFER, TRANSACTION_METHOD.DEBIT));
@@ -82,6 +74,16 @@ public class AccountDao {
         logger.info("Transaction logged successfully for account = {}", creditAccountNumber);
     }
 
+
+    public void logTransaction(String debitAccountNumber, String creditAccountNumber, BigDecimal amount) {
+
+        transactionRepository.save(buildTransaction(debitAccountNumber, creditAccountNumber,
+                amount, TRANSACTION_TYPE.AMOUNT_TRANSFER, TRANSACTION_METHOD.DEBIT));
+
+        transactionRepository.save(buildTransaction(debitAccountNumber, creditAccountNumber,
+                amount, TRANSACTION_TYPE.AMOUNT_TRANSFER, TRANSACTION_METHOD.CREDIT));
+    }
+
     private Transaction buildTransaction(String debitAccountNumber, String creditAccountNumber,
                                          BigDecimal amount, TRANSACTION_TYPE transactionType, TRANSACTION_METHOD transactionMethod) {
         return Transaction.builder()
@@ -94,4 +96,5 @@ public class AccountDao {
                 .transactionTimeStamp(new Timestamp(System.currentTimeMillis()).toString())
                 .build();
     }
+
 }

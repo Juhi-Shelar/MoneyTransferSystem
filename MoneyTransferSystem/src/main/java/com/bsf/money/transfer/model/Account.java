@@ -9,6 +9,7 @@ import java.sql.Date;
 //@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Account {

@@ -1,7 +1,11 @@
 package com.bsf.money.transfer.service;
 
 import com.bsf.money.transfer.dao.AccountDao;
+import com.bsf.money.transfer.entities.Transaction;
+import com.bsf.money.transfer.enums.TRANSACTION_METHOD;
+import com.bsf.money.transfer.enums.TRANSACTION_TYPE;
 import com.bsf.money.transfer.model.Account;
+import com.bsf.money.transfer.repository.TransactionRepository;
 import com.bsf.money.transfer.validator.Validator;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -12,12 +16,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
 public class AccountService {
     private final AccountDao accountDao;
+    private final TransactionRepository transactionRepository;
     private final Logger logger = LoggerFactory.getLogger(AccountDao.class);
 
     public Account getAccountByAccountNumber(String accountNumber) {
@@ -34,6 +41,7 @@ public class AccountService {
         validateAccounts(debitAccountNumber, creditAccountNumber);
         debitAmount(debitAccountNumber, creditAccountNumber, amount);
         creditAmount(debitAccountNumber, creditAccountNumber, amount);
+        accountDao.logTransaction(debitAccountNumber, creditAccountNumber, amount);
     }
 
     public void debitAmount(String debitAccountNumber, String creditAccountNumber, BigDecimal amount) {
@@ -66,4 +74,5 @@ public class AccountService {
             throw new IllegalArgumentException("Account does not exist");
 
     }
+
 }

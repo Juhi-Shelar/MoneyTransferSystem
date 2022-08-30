@@ -11,11 +11,10 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Component
 public class DataLoader implements ApplicationRunner {
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
     public DataLoader(AccountRepository accountRepository) {
@@ -48,5 +47,29 @@ public class DataLoader implements ApplicationRunner {
                 .build();
 
         accountRepository.save(account2);
+
+        Account account3 = Account.builder()
+                .accountNumber("723409127844")
+                .balance(BigDecimal.valueOf(1000))
+                .name("User3")
+                .accountType(ACCOUNT_TYPE.SAVINGS)
+                .branch("Pune")
+                .currency(CURRENCY.INR)
+                .created(new Timestamp(System.currentTimeMillis()).toString())
+                .build();
+
+        accountRepository.save(account3);
+
+        Account account4 = Account.builder()
+                .accountNumber("991234217041")
+                .balance(BigDecimal.valueOf(1000))
+                .name("User4")
+                .accountType(ACCOUNT_TYPE.SAVINGS)
+                .branch("Pune")
+                .currency(CURRENCY.INR)
+                .created(new Timestamp(System.currentTimeMillis()).toString())
+                .build();
+
+        accountRepository.save(account4);
     }
 }

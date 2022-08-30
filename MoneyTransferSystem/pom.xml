@@ -16,6 +16,9 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<sonar.coverage.exclusions>
+			**/com/bsf/money/transfer/config/**
+		</sonar.coverage.exclusions>
 	</properties>
 
 	<dependencies>
@@ -96,8 +99,13 @@
 <!--			<version>1.4.2.Final</version>-->
 			<version>1.4.2.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 
-<!--		<dependency>-->
+		<!--		<dependency>-->
 <!--			<groupId>org.mapstruct</groupId>-->
 <!--			<artifactId>mapstruct</artifactId>-->
 <!--		</dependency>-->
@@ -111,6 +119,24 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.5</version>
+				<configuration>
+					<excludes>
+						<exclude>com/bsf/money/transfer/config</exclude>
+						<exclude>com/bsf/money/transfer/entities</exclude>
+						<exclude>com/bsf/money/enums/</exclude>
+						<exclude>com/bsf/money/exception/</exclude>
+						<exclude>com/bsf/money/transfer/mapper</exclude>
+						<exclude>com/bsf/money/transfer/model</exclude>
+						<exclude>com/bsf/money/transfer/responses</exclude>
+						<exclude>com/bsf/money/transfer/util</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 
 			<plugin>

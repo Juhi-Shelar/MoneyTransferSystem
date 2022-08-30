@@ -3,11 +3,9 @@ package com.bsf.money.transfer.service;
 import com.bsf.money.transfer.MoneyTransferSystemApplication;
 import com.bsf.money.transfer.entities.Account;
 import com.bsf.money.transfer.repository.AccountRepository;
-import com.bsf.money.transfer.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -16,11 +14,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(classes = MoneyTransferSystemApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TransactionServiceTest {
+public class AccountServiceIntegrationTest {
     @Autowired AccountRepository accountRepository;
     @Autowired AccountService accountService;
 
@@ -29,8 +28,8 @@ public class TransactionServiceTest {
     @Test
     void shouldTransferAmount_withoutConcurrency() {
         // given
-        final String sourceAccount = "121";
-        final String destAccount = "122";
+        final String sourceAccount = "723409127844";
+        final String destAccount = "991234217041";
 
         Account source = accountRepository.getAccountByAccountNumber(sourceAccount);
         Account dest = accountRepository.getAccountByAccountNumber(destAccount);
@@ -58,10 +57,10 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void shouldTransferAmount_withoutConcurrency_usingOptimisticLockingHandling() throws InterruptedException {
+    void shouldTransferAmount_withConcurrency_usingOptimisticLockingHandling() throws InterruptedException {
         // given
-        final String sourceAccount = "121";
-        final String destAccount = "122";
+        final String sourceAccount = "723409127833";
+        final String destAccount = "991234437041";
 
         Account source = accountRepository.getAccountByAccountNumber(sourceAccount);
         Account dest = accountRepository.getAccountByAccountNumber(destAccount);
@@ -91,5 +90,41 @@ public class TransactionServiceTest {
 
         assertEquals(2L, source.getVersion());
         assertEquals(2L, dest.getVersion());
+    }
+
+    @Test
+    void testAmountTransfer_withInvalidAccounts() {
+        // given
+        final String sourceAccount = "723409127833";
+        final String destAccount = "991234437042";
+
+        Account source = accountRepository.getAccountByAccountNumber(sourceAccount);
+        Account dest = accountRepository.getAccountByAccountNumber(destAccount);
+
+        // then;
+        assertThrows(IllegalArgumentException.class, ()->
+                accountService.amountTransfer(sourceAccount, destAccount, BigDecimal.valueOf(1000)));
+
+    }
+
+    @Test
+    void testGetAccountByAccountNumber_ValidAccountNumber() {
+        // given
+        final String accountNumber = "991234437041";
+
+        // when
+        com.bsf.money.transfer.model.Account account = accountService.getAccountByAccountNumber(accountNumber);
+
+        //then
+        assertEquals("User2", account.getName());
+    }
+    @Test
+    void testGetAccountByAccountNumber_InvalidAccountNumber() {
+        // given
+        final String accountNumber = "709127822";
+
+        // then;
+        assertThrows(IllegalArgumentException.class, ()->
+                accountService.getAccountByAccountNumber(accountNumber));
     }
 }
