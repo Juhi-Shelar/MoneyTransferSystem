@@ -44,7 +44,6 @@ public class AccountDaoTest {
         Assertions.assertEquals("User1", account.getName());
     }
 
-
     @Test
     public void testDebitAmount_forInvalidAmount() {
         assertThrows(IllegalArgumentException.class, ()-> accountDao.debitAmount(

@@ -1,9 +1,6 @@
 package com.bsf.money.transfer.service;
 
 import com.bsf.money.transfer.dao.AccountDao;
-import com.bsf.money.transfer.entities.Transaction;
-import com.bsf.money.transfer.enums.TRANSACTION_METHOD;
-import com.bsf.money.transfer.enums.TRANSACTION_TYPE;
 import com.bsf.money.transfer.model.Account;
 import com.bsf.money.transfer.repository.TransactionRepository;
 import com.bsf.money.transfer.validator.Validator;
@@ -16,9 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.Objects;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
@@ -29,6 +23,7 @@ public class AccountService {
 
     public Account getAccountByAccountNumber(String accountNumber) {
         logger.info("Request parameters: accountNumber = {}", accountNumber);
+        // validate account number
         Validator.validateAccountNumber(accountNumber);
 
         return accountDao.getAccountByAccountNumber(accountNumber);
@@ -38,10 +33,15 @@ public class AccountService {
     public void amountTransfer(String debitAccountNumber, String creditAccountNumber, BigDecimal amount) {
         logger.info("Request parameters: debitAccountNumber = {}, creditAccountNumber = {}, amount = {} ",
                 debitAccountNumber, creditAccountNumber, amount);
+
+        // validate bith the accounts
         validateAccounts(debitAccountNumber, creditAccountNumber);
+
+        // debit from source account
         debitAmount(debitAccountNumber, creditAccountNumber, amount);
+
+        // credit into destination account
         creditAmount(debitAccountNumber, creditAccountNumber, amount);
-        accountDao.logTransaction(debitAccountNumber, creditAccountNumber, amount);
     }
 
     public void debitAmount(String debitAccountNumber, String creditAccountNumber, BigDecimal amount) {

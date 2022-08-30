@@ -7,6 +7,5 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
     @Mapping(source = "accountNumber", target = "accountNumber")
-//    @Mapping(source = "balance", target = "balance")
     Account toModel(com.bsf.money.transfer.entities.Account account);
 }

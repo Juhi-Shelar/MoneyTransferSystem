@@ -16,9 +16,6 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<sonar.coverage.exclusions>
-			**/com/bsf/money/transfer/config/**
-		</sonar.coverage.exclusions>
 	</properties>
 
 	<dependencies>
@@ -57,7 +54,6 @@
 			<version>1.18.20</version>
 			<scope>compile</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-boot-starter</artifactId>
@@ -68,15 +64,6 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/junit/junit -->
-<!--		<dependency>-->
-<!--			<groupId>junit</groupId>-->
-<!--			<artifactId>junit</artifactId>-->
-<!--			<version>4.6</version>-->
-<!--			<scope>test</scope>-->
-<!--		</dependency>-->
-		<!-- Junit 5 -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -92,11 +79,9 @@
 			<artifactId>junit-platform-launcher</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-<!--			<version>1.4.2.Final</version>-->
 			<version>1.4.2.Final</version>
 		</dependency>
 		<dependency>
@@ -104,13 +89,6 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-		<!--		<dependency>-->
-<!--			<groupId>org.mapstruct</groupId>-->
-<!--			<artifactId>mapstruct</artifactId>-->
-<!--		</dependency>-->
-		<!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct-processor -->
-
 
 	</dependencies>
 
@@ -158,29 +136,10 @@
 							<version>${lombok.version}</version>
 						</path>
 					</annotationProcessorPaths>
-<!--					<compilerArgs>-->
-<!--						<compilerArg>-->
-<!--							-Amapstruct.defaultComponentModel=spring-->
-<!--						</compilerArg>-->
-<!--					</compilerArgs>-->
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
-<!--	<repositories>-->
-<!--		<repository>-->
-<!--			<id>spring-milestones</id>-->
-<!--			<name>Spring Milestones</name>-->
-<!--			<url>https://repo.spring.io/milestone</url>-->
-<!--		</repository>-->
-<!--	</repositories>-->
-<!--	<pluginRepositories>-->
-<!--		<pluginRepository>-->
-<!--			<id>spring-milestones</id>-->
-<!--			<name>Spring Milestones</name>-->
-<!--			<url>https://repo.spring.io/milestone</url>-->
-<!--		</pluginRepository>-->
-<!--	</pluginRepositories>-->
 
 </project>

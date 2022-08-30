@@ -50,6 +50,7 @@ public class AccountDao {
         // validation check on account
         Validator.validateBalanceIsSufficient(account, amount);
 
+        // debit balance and update in DB
         account.setBalance(account.getBalance().subtract(amount));
         account.setModified(new Timestamp(System.currentTimeMillis()).toString());
         accountRepository.save(account);
@@ -62,8 +63,13 @@ public class AccountDao {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void creditAmount(String debitAccountNumber, String creditAccountNumber, BigDecimal amount) {
+        // validation check on amount
+        Objects.requireNonNull(amount, "Amount cannot be null");
+        Validator.validateAmountNotNegative(amount);
+
         Account account = accountRepository.getAccountByAccountNumber(creditAccountNumber);
 
+        // credit balance and update DB
         account.setBalance(account.getBalance().add(amount));
         account.setModified(new Timestamp(System.currentTimeMillis()).toString());
         accountRepository.save(account);
@@ -72,16 +78,6 @@ public class AccountDao {
         transactionRepository.save(buildTransaction(debitAccountNumber, creditAccountNumber,
                 amount, TRANSACTION_TYPE.AMOUNT_TRANSFER, TRANSACTION_METHOD.CREDIT));
         logger.info("Transaction logged successfully for account = {}", creditAccountNumber);
-    }
-
-
-    public void logTransaction(String debitAccountNumber, String creditAccountNumber, BigDecimal amount) {
-
-        transactionRepository.save(buildTransaction(debitAccountNumber, creditAccountNumber,
-                amount, TRANSACTION_TYPE.AMOUNT_TRANSFER, TRANSACTION_METHOD.DEBIT));
-
-        transactionRepository.save(buildTransaction(debitAccountNumber, creditAccountNumber,
-                amount, TRANSACTION_TYPE.AMOUNT_TRANSFER, TRANSACTION_METHOD.CREDIT));
     }
 
     private Transaction buildTransaction(String debitAccountNumber, String creditAccountNumber,
