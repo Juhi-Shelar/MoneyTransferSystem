@@ -1,8 +1,7 @@
 package com.bsf.money.transfer.service;
 
 import com.bsf.money.transfer.MoneyTransferSystemApplication;
-import com.bsf.money.transfer.dao.TransactionDao;
-import com.bsf.money.transfer.model.Account;
+import com.bsf.money.transfer.entities.Account;
 import com.bsf.money.transfer.repository.AccountRepository;
 import com.bsf.money.transfer.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
@@ -22,22 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(classes = MoneyTransferSystemApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TransactionServiceTest {
-    @Autowired
-    private TransactionService transactionService;
-
-    @Autowired
-    private TransactionRepository transactionRepository;
-
-    @SpyBean
-    private TransactionDao transactionDao;
-
-    @Autowired
-    AccountRepository accountRepository;
+    @Autowired AccountRepository accountRepository;
+    @Autowired AccountService accountService;
 
     private final List<Integer> amounts = Arrays.asList(300, 200);
 
     @Test
-    void shouldIncrementItemAmount_withoutConcurrency() {
+    void shouldTransferAmount_withoutConcurrency() {
         // given
         final String sourceAccount = "121";
         final String destAccount = "122";
@@ -53,7 +43,7 @@ public class TransactionServiceTest {
 
         // when
         for(final int amount: amounts) {
-            transactionService.amountTransfer(sourceAccount, destAccount, BigDecimal.valueOf(amount));
+            accountService.amountTransfer(sourceAccount, destAccount, BigDecimal.valueOf(amount));
         }
 
         // then
@@ -68,7 +58,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void shouldIncrementItemAmount_withOptimisticLockingHandling() throws InterruptedException {
+    void shouldTransferAmount_withoutConcurrency_usingOptimisticLockingHandling() throws InterruptedException {
         // given
         final String sourceAccount = "121";
         final String destAccount = "122";
@@ -86,7 +76,7 @@ public class TransactionServiceTest {
         final ExecutorService executor = Executors.newFixedThreadPool(amounts.size());
 
         for (final int amount : amounts) {
-            executor.execute(() -> transactionService.amountTransfer(sourceAccount, destAccount, BigDecimal.valueOf(amount)));
+            executor.execute(() -> accountService.amountTransfer(sourceAccount, destAccount, BigDecimal.valueOf(amount)));
         }
 
         executor.shutdown();

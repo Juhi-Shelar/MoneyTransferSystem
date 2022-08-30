@@ -17,7 +17,6 @@ public class SwaggerConfig {
                 .description("Money Transfer API Documentation")
                 .build();
     }
-
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)

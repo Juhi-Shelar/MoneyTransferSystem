@@ -1,6 +1,8 @@
 package com.bsf.money.transfer.util;
 
-import com.bsf.money.transfer.model.Account;
+import com.bsf.money.transfer.entities.Account;
+import com.bsf.money.transfer.enums.ACCOUNT_TYPE;
+import com.bsf.money.transfer.enums.CURRENCY;
 import com.bsf.money.transfer.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -8,6 +10,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Component
@@ -21,8 +24,29 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        accountRepository.save(new Account(UUID.randomUUID().toString(), "121", new BigDecimal(1000), 0L));
 
-        accountRepository.save(new Account(UUID.randomUUID().toString(), "122", new BigDecimal(1000), 0L));
+        Account account1 = Account.builder()
+                .accountNumber("723409127833")
+                .balance(BigDecimal.valueOf(1000))
+                .name("User1")
+                .accountType(ACCOUNT_TYPE.SAVINGS)
+                .branch("Pune")
+                .currency(CURRENCY.INR)
+                .created(new Timestamp(System.currentTimeMillis()).toString())
+                .build();
+
+        accountRepository.save(account1);
+
+        Account account2 = Account.builder()
+                .accountNumber("991234437041")
+                .balance(BigDecimal.valueOf(1000))
+                .name("User2")
+                .accountType(ACCOUNT_TYPE.SAVINGS)
+                .branch("Pune")
+                .currency(CURRENCY.INR)
+                .created(new Timestamp(System.currentTimeMillis()).toString())
+                .build();
+
+        accountRepository.save(account2);
     }
 }

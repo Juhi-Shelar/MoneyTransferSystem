@@ -1,30 +1,22 @@
 package com.bsf.money.transfer.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.bsf.money.transfer.enums.ACCOUNT_TYPE;
+import lombok.*;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.UUID;
+import java.sql.Date;
 
-@Entity
-@Table
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class Account {
-    @Id @Column(name = "accountid")
-    String accountId = UUID.randomUUID().toString();
-
-    @Column(name = "accountnumber")
-    String accountNumber;
-
-    @Column(name = "balance")
-    BigDecimal balance;
-
-    @Version
-    private Long version;
+    private String accountNumber;
+    private BigDecimal balance;
+    private String name;
+    private ACCOUNT_TYPE accountType;
+    private String branch;
+    private String currency;
+    private Date accountOpenDate;
 }

@@ -1,6 +1,6 @@
 package com.bsf.money.transfer.repository;
 
-import com.bsf.money.transfer.model.Transaction;
+import com.bsf.money.transfer.entities.Transaction;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
